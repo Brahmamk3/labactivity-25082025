@@ -17,3 +17,24 @@ resource "aws_instance" "app_server" {
 output "app_server_ip" {
   value = aws_instance.app_server.public_ip
 }
+
+install-web.yml:
+----------------
+- hosts: jenkins
+  become: yes
+  tasks:
+    - name: Update apt packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Ensure Nginx is running
+      service:
+        name: nginx
+        state: started
+        enabled: yes

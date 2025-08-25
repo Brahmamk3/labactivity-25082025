@@ -1,0 +1,19 @@
+provider "aws" {
+  region = "eu-west-2" # London region
+}
+
+resource "aws_instance" "app_server" {
+  ami                    = "ami-046c2381f11878233" # Ubuntu AMI you provided
+  instance_type          = "t2.micro"
+  subnet_id              = "subnet-02ee126d17d8cc4d2" # your subnet ID
+  vpc_security_group_ids = ["sg-079e0a84ce2591285"]   # your SG ID
+  key_name               = "veera-brahmam"            # your key pair name
+
+  tags = {
+    Name = "veera-app-server"
+  }
+}
+
+output "app_server_ip" {
+  value = aws_instance.app_server.public_ip
+}
